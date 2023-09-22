@@ -70,6 +70,22 @@ std::pair<int, double> BifrostGeometry::calcUnitAndPos(int Group, int AmpA,
     return InvalidPos;
   }
 
+  auto & polygons = CaenCDCalibration.Polygons[Group];
+  if (polygons.empty()) {
+    XTRACE(DATA, DEB, "No polygons for group %d", Group);
+  }
+  bool in_one{false};
+  for (const auto & polygon : polygons) {
+    if (polygon.contains(std::make_pair<double, double>(AmpA, AmpB))) {
+      in_one = true;
+      break;
+    }
+  }
+  if (!polygons.empty() && !in_one) {
+    XTRACE(DATA, DEB, "A %d, B %d outside polygon(s)", AmpA, AmpB);
+    return InvalidPos;
+  }
+
   double GlobalPos = 1.0 * AmpA / (AmpA + AmpB); // [0.0 ; 1.0]
   if ((GlobalPos < 0) or (GlobalPos > 1.0)) {
     XTRACE(DATA, WAR, "Pos %f not in unit interval", GlobalPos);

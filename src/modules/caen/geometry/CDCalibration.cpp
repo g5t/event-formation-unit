@@ -128,6 +128,7 @@ void CDCalibration::consistencyCheck() {
     }
     validateIntervals(Index, Parm);
     validatePolynomials(Index, Parm);
+    validatePolygons(Index, Parm);
     Index++;
   }
 }
@@ -150,6 +151,14 @@ void CDCalibration::loadCalibration() {
         Group["polynomials"].get<std::vector<std::vector<double>>>();
     Calibration.push_back(GroupPolys);
     Polynomials += Parms.GroupSize;
+
+    auto GroupPolygons = Group["polygons"].get<std::vector<std::vector<std::pair<double, double>>>>();
+    std::vector<polygons::Polygon> polygons;
+    for (const auto & gp: GroupPolygons){
+      auto polygon = polygons::Polygon(gp);
+      polygons.push_back(polygon);
+    }
+    Polygons.push_back(polygons);
   }
   XTRACE(INIT, ALW, "Loaded %d polynomials from %d groups", Polynomials,
          Parms.Groups);
@@ -211,6 +220,24 @@ void CDCalibration::validatePolynomials(int Index, nlohmann::json Parameter) {
     }
   }
 }
+
+void CDCalibration::validatePolygons(int Index, nlohmann::json Parameter) {
+  std::vector<std::vector<std::vector<double>>> Polygons = Parameter["polygons"];
+  for (auto & Polygon : Polygons) {
+    if (Polygon.size() < 3) {
+      Message = fmt::format("Groupindex {} polygon vertex error: expected at least 3, got {}",
+                            Index, Polygon.size());
+      throwException(Message);
+    }
+    for (auto & Vertices : Polygon) {
+        if (Vertices.size() != 2) {
+          Message = fmt::format("Groupindex {} vertex coordinate error: expected 2, got {}",
+                          Index, Vertices.size());
+          throwException(Message);
+        }
+      }
+    }
+  }
 
 bool CDCalibration::inUnitInterval(std::pair<double, double> &Pair) {
   return ((Pair.first >= 0.0) and (Pair.first <= 1.0) and

@@ -12,6 +12,7 @@
 #pragma once
 
 #include <common/JsonFile.h>
+#include <common/Polygons.h>
 #include <string>
 
 // #undef TRC_LEVEL
@@ -50,6 +51,9 @@ public:
 
   /// \brief coefficients are vectors of vectors of vectors
   std::vector<std::vector<std::vector<double>>> Calibration;
+
+  /// \brief polygons are vectors of vectors of Polygon objects
+  std::vector<std::vector<polygons::Polygon>> Polygons;
 
   // Grafana Counters
   struct Stats {
@@ -100,6 +104,10 @@ private:
   ///\param Index groupindex used for error messages
   ///\param Parameter the parameter section object
   void validatePolynomials(int Index, nlohmann::json Parameter);
+
+  ///\brief validate that the provided polygon point lists have the expected sizes,
+  /// and that the points are all two-vectors
+  void validatePolygons(int Index, nlohmann::json Parameter);
 
   ///\brief helper function to check that the returned value is an object.
   /// \todo not torally sure when it is expected to be this. For example if
