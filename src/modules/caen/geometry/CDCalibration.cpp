@@ -152,11 +152,14 @@ void CDCalibration::loadCalibration() {
     Calibration.push_back(GroupPolys);
     Polynomials += Parms.GroupSize;
 
-    auto GroupPolygons = Group["polygons"].get<std::vector<std::vector<std::pair<double, double>>>>();
     std::vector<polygons::Polygon> polygons;
-    for (const auto & gp: GroupPolygons){
-      auto polygon = polygons::Polygon(gp);
-      polygons.push_back(polygon);
+    if (Group.contains("polygons")){
+        auto GroupPolygons = Group["polygons"].get<std::vector<std::vector<std::pair<double, double>>>>();
+        polygons.reserve(GroupPolygons.size());
+        for (const auto & gp: GroupPolygons){
+            auto polygon = polygons::Polygon(gp);
+            polygons.push_back(polygon);
+        }
     }
     Polygons.push_back(polygons);
   }
@@ -222,20 +225,23 @@ void CDCalibration::validatePolynomials(int Index, nlohmann::json Parameter) {
 }
 
 void CDCalibration::validatePolygons(int Index, nlohmann::json Parameter) {
-  std::vector<std::vector<std::vector<double>>> Polygons = Parameter["polygons"];
-  for (auto & Polygon : Polygons) {
-    if (Polygon.size() < 3) {
-      Message = fmt::format("Groupindex {} polygon vertex error: expected at least 3, got {}",
-                            Index, Polygon.size());
-      throwException(Message);
-    }
-    for (auto & Vertices : Polygon) {
-        if (Vertices.size() != 2) {
-          Message = fmt::format("Groupindex {} vertex coordinate error: expected 2, got {}",
-                          Index, Vertices.size());
-          throwException(Message);
+    // A missing 'polygons' key is not an error
+    if (Parameter.contains("polygons")){
+        std::vector<std::vector<std::vector<double>>> polygons = Parameter["polygons"];
+        for (auto & polygon : polygons) {
+            if (polygon.size() < 3) {
+                Message = fmt::format("Groupindex {} polygon vertex error: expected at least 3, got {}",
+                                      Index, polygon.size());
+                throwException(Message);
+            }
+            for (auto & vertices : polygon) {
+                if (vertices.size() != 2) {
+                    Message = fmt::format("Groupindex {} vertex coordinate error: expected 2, got {}",
+                                          Index, vertices.size());
+                    throwException(Message);
+                }
+            }
         }
-      }
     }
   }
 
