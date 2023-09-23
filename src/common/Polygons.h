@@ -22,15 +22,16 @@ namespace polygons {
     [[nodiscard]] bool isConvex() const;
     [[nodiscard]] bool contains(const Point & p) const;
 
+    Polygon() = default;
     explicit Polygon(Points points) : _points(std::move(points)) {}
     Polygon(const Polygon & other) = default;
     Polygon(Polygon && other) noexcept : _points(std::move(other._points)) {}
 
-    explicit Polygon(const std::vector<std::vector<double>> & points) {
-      for (const auto & p : points) {
-        _points.emplace_back(p[0], p[1]);
-      }
-    }
+//    explicit Polygon(const std::vector<std::vector<double>> & points) {
+//      for (const auto & p : points) {
+//        _points.emplace_back(p[0], p[1]);
+//      }
+//    }
 
     Polygon & operator=(const Polygon & other) = default;
     Polygon & operator=(Polygon && other)  noexcept {

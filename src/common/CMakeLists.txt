@@ -19,6 +19,7 @@ set(efu_common_SRC
   time/TSCTimer.cpp
   Statistics.cpp
   StatPublisher.cpp
+  Polygons.cpp
   ${ESS_SOURCE_DIR}/efu/ExitHandler.cpp
   ${ESS_SOURCE_DIR}/efu/Graylog.cpp
   ${ESS_SOURCE_DIR}/efu/HwCheck.cpp
@@ -57,6 +58,7 @@ set(efu_common_INC
   JsonFile.h
   Statistics.h
   StatPublisher.h
+  Polygons.h
   ${ESS_SOURCE_DIR}/efu/ExitHandler.h
   ${ESS_SOURCE_DIR}/efu/Graylog.h
   ${ESS_SOURCE_DIR}/efu/HwCheck.h

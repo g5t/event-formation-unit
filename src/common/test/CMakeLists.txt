@@ -68,3 +68,8 @@ set(ESSGeometryBenchmarkTest_SRC
   ESSGeometryBenchmarkTest.cpp
   )
 create_benchmark_executable(ESSGeometryBenchmarkTest)
+
+set(PolygonsTest_SRC
+  PolygonsTest.cpp
+  )
+create_test_executable(PolygonsTest)
