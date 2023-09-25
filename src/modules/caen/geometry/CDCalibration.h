@@ -53,7 +53,7 @@ public:
   std::vector<std::vector<std::vector<double>>> Calibration;
 
   /// \brief polygons are vectors of vectors of Polygon objects
-  std::vector<std::vector<polygons::Polygon>> Polygons;
+  std::vector<std::vector<polygons::Polygon>> Accept, Reject;
 
   // Grafana Counters
   struct Stats {
@@ -105,9 +105,12 @@ private:
   ///\param Parameter the parameter section object
   void validatePolynomials(int Index, nlohmann::json Parameter);
 
-  ///\brief validate that the provided polygon point lists have the expected sizes,
+  ///\brief validate that the provided polygon points list(s) have the expected sizes,
   /// and that the points are all two-vectors
-  void validatePolygons(int Index, nlohmann::json Parameter);
+  ///\param Index groupindex used for error messages
+  ///\param Parameter the parameter section object
+  ///\param named the name of the polygon list to validate, i.e., "accept_mask" or "reject_mask"
+  void validatePolygons(int Index, nlohmann::json Parameter, const std::string & named);
 
   ///\brief helper function to check that the returned value is an object.
   /// \todo not torally sure when it is expected to be this. For example if

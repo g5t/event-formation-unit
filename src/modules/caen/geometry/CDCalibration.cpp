@@ -128,7 +128,8 @@ void CDCalibration::consistencyCheck() {
     }
     validateIntervals(Index, Parm);
     validatePolynomials(Index, Parm);
-    validatePolygons(Index, Parm);
+    validatePolygons(Index, Parm, "accept_mask");
+    validatePolygons(Index, Parm, "reject_mask");
     Index++;
   }
 }
@@ -152,16 +153,22 @@ void CDCalibration::loadCalibration() {
     Calibration.push_back(GroupPolys);
     Polynomials += Parms.GroupSize;
 
-    std::vector<polygons::Polygon> polygons;
-    if (Group.contains("polygons")){
-        auto GroupPolygons = Group["polygons"].get<std::vector<std::vector<std::pair<double, double>>>>();
-        polygons.reserve(GroupPolygons.size());
+    std::vector<polygons::Polygon> accept, reject;
+    auto convert_json_polygons = [&Group](const std::string & named, std::vector<polygons::Polygon>& storage){
+      using json_polygons = std::vector<std::vector<std::pair<double, double>>>;
+      if (Group.contains(named)){
+        auto GroupPolygons = Group[named].get<json_polygons>();
+        storage.reserve(GroupPolygons.size());
         for (const auto & gp: GroupPolygons){
-            auto polygon = polygons::Polygon(gp);
-            polygons.push_back(polygon);
+          auto polygon = polygons::Polygon(gp);
+          storage.push_back(polygon);
         }
-    }
-    Polygons.push_back(polygons);
+      }
+    };
+    convert_json_polygons("accept_mask", accept);
+    convert_json_polygons("reject_mask", reject);
+    Accept.push_back(accept);
+    Reject.push_back(reject);
   }
   XTRACE(INIT, ALW, "Loaded %d polynomials from %d groups", Polynomials,
          Parms.Groups);
@@ -224,20 +231,20 @@ void CDCalibration::validatePolynomials(int Index, nlohmann::json Parameter) {
   }
 }
 
-void CDCalibration::validatePolygons(int Index, nlohmann::json Parameter) {
+void CDCalibration::validatePolygons(int Index, nlohmann::json Parameter, const std::string & key) {
     // A missing 'polygons' key is not an error
-    if (Parameter.contains("polygons")){
-        std::vector<std::vector<std::vector<double>>> polygons = Parameter["polygons"];
+    if (Parameter.contains(key)){
+        std::vector<std::vector<std::vector<double>>> polygons = Parameter[key];
         for (auto & polygon : polygons) {
             if (polygon.size() < 3) {
-                Message = fmt::format("Groupindex {} polygon vertex error: expected at least 3, got {}",
-                                      Index, polygon.size());
+                Message = fmt::format("Groupindex {} {} polygon vertex error: expected at least 3, got {}",
+                                      Index, key, polygon.size());
                 throwException(Message);
             }
             for (auto & vertices : polygon) {
                 if (vertices.size() != 2) {
-                    Message = fmt::format("Groupindex {} vertex coordinate error: expected 2, got {}",
-                                          Index, vertices.size());
+                    Message = fmt::format("Groupindex {} {} vertex coordinate error: expected 2, got {}",
+                                          Index, key, vertices.size());
                     throwException(Message);
                 }
             }

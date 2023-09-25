@@ -70,18 +70,27 @@ std::pair<int, double> BifrostGeometry::calcUnitAndPos(int Group, int AmpA,
     return InvalidPos;
   }
 
-  auto & polygons = CaenCDCalibration.Polygons[Group];
-  if (!polygons.empty()) {
+  // Polygon region(s) based acceptance and rejection filters:
+  auto ab_point = std::make_pair<double, double>(AmpA, AmpB);
+  if (!CaenCDCalibration.Accept[Group].empty()) {
       bool in_one{false};
-      for (const auto & polygon : polygons) {
-          if (polygon.contains(std::make_pair<double, double>(AmpA, AmpB))) {
+      for (const auto & polygon : CaenCDCalibration.Accept[Group]) {
+          if (polygon.contains(ab_point)) {
               in_one = true;
               break;
           }
       }
       if (!in_one) {
-          XTRACE(DATA, DEB, "A %d, B %d outside polygon(s)", AmpA, AmpB);
+          XTRACE(DATA, DEB, "A %d, B %d outside accept polygon(s)", AmpA, AmpB);
           return InvalidPos;
+      }
+  }
+  if (!CaenCDCalibration.Reject[Group].empty()) {
+      for (const auto & polygon : CaenCDCalibration.Reject[Group]) {
+          if (polygon.contains(ab_point)) {
+              XTRACE(DATA, DEB, "A %d, B %d inside reject polygon(s)", AmpA, AmpB);
+              return InvalidPos;
+          }
       }
   }
 
