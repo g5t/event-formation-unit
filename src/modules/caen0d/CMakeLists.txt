@@ -8,6 +8,6 @@ add_subdirectory(generators)
 add_subdirectory(test)
 
 
-set(bragg_SRC main.cpp)
-set(bragg_LIB efu_reduction caen_common efu_essreadout)
-create_executable(bragg)
+set(caen0d_SRC main.cpp)
+set(caen0d_LIB efu_reduction caen_common efu_essreadout)
+create_executable(caen0d)

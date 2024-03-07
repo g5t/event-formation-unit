@@ -7,7 +7,7 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#include <bragg/generators/ReadoutGenerator.h>
+#include <caen0d/generators/ReadoutGenerator.h>
 #include <common/debug/Trace.h>
 #include <fcntl.h>
 #include <generators/essudpgen/ReadoutGeneratorBase.h>
@@ -26,7 +26,7 @@ int ReadoutGenerator::readReadout(struct dat_data_t &Readout) {
   if (FileDescriptor == -1) {
     throw std::runtime_error(
         "Failed to open the file: " + Settings.FilePath +
-        ". Biforst Bragg gen requires dat file with sample data");
+        ". Bifrost Bragg gen requires dat file with sample data");
   }
 
   int res = read(FileDescriptor, (void *)&Readout, sizeof(struct dat_data_t));

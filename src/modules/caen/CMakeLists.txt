@@ -8,8 +8,8 @@ get_filename_component(LOKI_CONFIG "${ESS_MODULE_DIR}/loki/configs/LokiFull.json
 get_filename_component(LOKI_CALIB "${ESS_MODULE_DIR}/loki/configs/lokinullcalib.json" ABSOLUTE)
 get_filename_component(BIFROST_CONFIG "${ESS_MODULE_DIR}/bifrost/configs/bifrost.json" ABSOLUTE)
 get_filename_component(BIFROST_CALIB "${ESS_MODULE_DIR}/bifrost/configs/bifrostnullcalib.json" ABSOLUTE)
-get_filename_component(BRAGG_CONFIG "${ESS_MODULE_DIR}/bragg/configs/bragg.json" ABSOLUTE)
-get_filename_component(BRAGG_CALIB "${ESS_MODULE_DIR}/bifrost/configs/bifrostnullcalib.json" ABSOLUTE)
+get_filename_component(CAEN0D_CONFIG "${ESS_MODULE_DIR}/caen0d/configs/caen0d.json" ABSOLUTE)
+get_filename_component(CAEN0D_CALIB "${ESS_MODULE_DIR}/bifrost/configs/bifrostnullcalib.json" ABSOLUTE)
 get_filename_component(MIRACLES_CONFIG "${ESS_MODULE_DIR}/miracles/configs/miracles.json" ABSOLUTE)
 get_filename_component(MIRACLES_CALIB "${ESS_MODULE_DIR}/miracles/configs/miraclesnullcalib.json" ABSOLUTE)
 get_filename_component(CSPEC_CONFIG "${ESS_MODULE_DIR}/cspec/configs/cspec.json" ABSOLUTE)
@@ -27,7 +27,7 @@ set(caen_common_inc
   geometry/Geometry.h
   geometry/Interval.h
   ${ESS_MODULE_DIR}/bifrost/geometry/BifrostGeometry.h
-  ${ESS_MODULE_DIR}/bragg/geometry/BraggGeometry.h
+  ${ESS_MODULE_DIR}/caen0d/geometry/CAEN0DGeometry.h
   ${ESS_MODULE_DIR}/loki/geometry/LokiConfig.h
   ${ESS_MODULE_DIR}/loki/geometry/LokiGeometry.h
   ${ESS_MODULE_DIR}/miracles/geometry/MiraclesGeometry.h
@@ -41,7 +41,7 @@ set(caen_common_src
   geometry/CDCalibration.cpp
   geometry/Interval.cpp
   ${ESS_MODULE_DIR}/bifrost/geometry/BifrostGeometry.cpp
-  ${ESS_MODULE_DIR}/bragg/geometry/BraggGeometry.cpp
+  ${ESS_MODULE_DIR}/caen0d/geometry/CAEN0DGeometry.cpp
   ${ESS_MODULE_DIR}/loki/geometry/LokiConfig.cpp
   ${ESS_MODULE_DIR}/loki/geometry/LokiGeometry.cpp
   ${ESS_MODULE_DIR}/miracles/geometry/MiraclesGeometry.cpp
@@ -73,8 +73,8 @@ target_compile_definitions(CaenInstrumentTest PRIVATE LOKI_CONFIG="${LOKI_CONFIG
 target_compile_definitions(CaenInstrumentTest PRIVATE LOKI_CALIB="${LOKI_CALIB}")
 target_compile_definitions(CaenInstrumentTest PRIVATE BIFROST_CONFIG="${BIFROST_CONFIG}")
 target_compile_definitions(CaenInstrumentTest PRIVATE BIFROST_CALIB="${BIFROST_CALIB}")
-target_compile_definitions(CaenInstrumentTest PRIVATE BRAGG_CONFIG="${BRAGG_CONFIG}")
-target_compile_definitions(CaenInstrumentTest PRIVATE BRAGG_CALIB="${BRAGG_CALIB}")
+target_compile_definitions(CaenInstrumentTest PRIVATE CAEN0D_CONFIG="${CAEN0D_CONFIG}")
+target_compile_definitions(CaenInstrumentTest PRIVATE CAEN0D_CALIB="${CAEN0D_CALIB}")
 target_compile_definitions(CaenInstrumentTest PRIVATE CSPEC_CONFIG="${CSPEC_CONFIG}")
 target_compile_definitions(CaenInstrumentTest PRIVATE CSPEC_CALIB="${CSPEC_CALIB}")
 
@@ -90,8 +90,8 @@ target_compile_definitions(CaenBaseTest PRIVATE LOKI_CONFIG="${LOKI_CONFIG}")
 target_compile_definitions(CaenBaseTest PRIVATE LOKI_CALIB="${LOKI_CALIB}")
 target_compile_definitions(CaenBaseTest PRIVATE BIFROST_CONFIG="${BIFROST_CONFIG}")
 target_compile_definitions(CaenBaseTest PRIVATE BIFROST_CALIB="${BIFROST_CALIB}")
-target_compile_definitions(CaenBaseTest PRIVATE BRAGG_CONFIG="${BRAGG_CONFIG}")
-target_compile_definitions(CaenBaseTest PRIVATE BRAGG_CALIB="${BRAGG_CALIB}")
+target_compile_definitions(CaenBaseTest PRIVATE CAEN0D_CONFIG="${CAEN0D_CONFIG}")
+target_compile_definitions(CaenBaseTest PRIVATE CAEN0D_CALIB="${CAEN0D_CALIB}")
 target_compile_definitions(CaenBaseTest PRIVATE MIRACLES_CONFIG="${MIRACLES_CONFIG}")
 target_compile_definitions(CaenBaseTest PRIVATE MIRACLES_CALIB="${MIRACLES_CALIB}")
 target_compile_definitions(CaenBaseTest PRIVATE CSPEC_CONFIG="${CSPEC_CONFIG}")

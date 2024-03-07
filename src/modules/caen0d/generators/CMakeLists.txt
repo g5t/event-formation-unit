@@ -9,20 +9,20 @@ include_directories(..)
 # Generate BIFROST Bragg readouts from (.dat) file
 #=============================================================================
 
-set(bifrost_bragg_udp_generated_INC
+set(caen0d_udp_generated_INC
   ${ESS_SOURCE_DIR}/generators/essudpgen/ReadoutGeneratorBase.h
-  ${ESS_MODULE_DIR}/bragg/generators/ReadoutGenerator.h
+  ${ESS_MODULE_DIR}/caen0d/generators/ReadoutGenerator.h
   ${ESS_COMMON_DIR}/testutils/DataFuzzer.h
   )
-set(bifrost_bragg_udp_generated_SRC
+set(caen0d_udp_generated_SRC
   ${ESS_SOURCE_DIR}/generators/essudpgen/ReadoutGeneratorBase.cpp
-  ${ESS_MODULE_DIR}/bragg/generators/ReadoutGenerator.cpp
-  ${ESS_MODULE_DIR}/bragg/generators/udpgen.cpp
+  ${ESS_MODULE_DIR}/caen0d/generators/ReadoutGenerator.cpp
+  ${ESS_MODULE_DIR}/caen0d/generators/udpgen.cpp
   ${ESS_COMMON_DIR}/testutils/DataFuzzer.cpp
   )
-create_executable(bifrost_bragg_udp_generated)
+create_executable(caen0d_udp_generated)
 
-set_target_properties(bifrost_bragg_udp_generated
+set_target_properties(caen0d_udp_generated
   PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/generators"
   )

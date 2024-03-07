@@ -6,16 +6,16 @@
 /// \brief Unit test for Bifrost Bragg position calculations
 ///
 //===----------------------------------------------------------------------===//
-#include <bifrost/geometry/BraggGeometry.h>
+#include <caen0d/geometry/CAEN0DGeometry.h>
 #include <caen/readout/DataParser.h>
 #include <common/testutils/TestBase.h>
 
 using namespace Caen;
 
-class BraggGeometryTest : public TestBase {
+class CAEN0DGeometryTest : public TestBase {
 protected:
   Config CaenConfiguration;
-  BraggGeometry *geom;
+  CAEN0DGeometry *geom;
 
   int NullCalibGroup{0};
   int ManualCalibGroup{44};
@@ -26,7 +26,7 @@ protected:
       {0.030, 0.290}, {0.627, 0.363}, {0.705, 0.970}};
 
   void SetUp() override {
-    geom = new BraggGeometry(CaenConfiguration);
+    geom = new CAEN0DGeometry(CaenConfiguration);
     geom->NPos = 300;
 
     CaenConfiguration.NGroupsTotal=45;
@@ -42,7 +42,7 @@ protected:
   void TearDown() override {}
 };
 
-TEST_F(BraggGeometryTest, YOffset) {
+TEST_F(CAEN0DGeometryTest, YOffset) {
   ASSERT_EQ(geom->yOffset(0), 0);
   ASSERT_EQ(geom->yOffset(1), 0);
   ASSERT_EQ(geom->yOffset(2), 0);
@@ -60,7 +60,7 @@ TEST_F(BraggGeometryTest, YOffset) {
   ASSERT_EQ(geom->yOffset(14), 12);
 }
 
-TEST_F(BraggGeometryTest, XOffset) {
+TEST_F(CAEN0DGeometryTest, XOffset) {
   ASSERT_EQ(geom->xOffset(0, 0), 0);
   ASSERT_EQ(geom->xOffset(0, 1), 100);
   ASSERT_EQ(geom->xOffset(0, 2), 200);
@@ -72,35 +72,35 @@ TEST_F(BraggGeometryTest, XOffset) {
   ASSERT_EQ(geom->xOffset(2, 2), 800);
 }
 
-TEST_F(BraggGeometryTest, Position) {
+TEST_F(CAEN0DGeometryTest, Position) {
   ASSERT_EQ(geom->calcUnitAndPos(0, 0, 0).first, -1);
   ASSERT_EQ(geom->calcUnitAndPos(0, 0, 1).second, 0.0);
   ASSERT_EQ(geom->calcUnitAndPos(0, 1, 0).second, 1.0);
 }
 
-TEST_F(BraggGeometryTest, PosOutsideInterval) {
-  // geom->CaenCalibration.BraggCalibration.Calib =
-  //       geom->CaenCalibration.BraggCalibration.Intervals;
+TEST_F(CAEN0DGeometryTest, PosOutsideInterval) {
+  // geom->CaenCalibration.CAEN0DCalibration.Calib =
+  //       geom->CaenCalibration.CAEN0DCalibration.Intervals;
   ASSERT_EQ(geom->CaenCDCalibration.Stats.OutsideInterval, 0);
   std::pair<int, float> Result = geom->calcUnitAndPos(ManualCalibGroup, 100, 0);
   ASSERT_EQ(Result.first, -1);
   ASSERT_EQ(geom->CaenCDCalibration.Stats.OutsideInterval, 1);
 }
 
-TEST_F(BraggGeometryTest, BadAmplitudes) {
+TEST_F(CAEN0DGeometryTest, BadAmplitudes) {
   // A = -1, B = 20 -> pos < 0
   std::pair<int, float> Result = geom->calcUnitAndPos(ManualCalibGroup, -1, 20);
   ASSERT_EQ(Result.first, -1);
 }
 
-TEST_F(BraggGeometryTest, MiddleUnit) {
+TEST_F(CAEN0DGeometryTest, MiddleUnit) {
   // 11/(11+9) > 0.5, middle tube swaps so pos should be < 0.5
   std::pair<int, float> Result = geom->calcUnitAndPos(ManualCalibGroup, 11, 9);
   ASSERT_EQ(Result.first, 1);
   ASSERT_TRUE(Result.second < 0.5);
 }
 
-TEST_F(BraggGeometryTest, CalcPixel) {
+TEST_F(CAEN0DGeometryTest, CalcPixel) {
   DataParser::CaenReadout readout{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   ASSERT_EQ(geom->calcPixel(readout), 0);
 
@@ -108,7 +108,7 @@ TEST_F(BraggGeometryTest, CalcPixel) {
   ASSERT_EQ(geom->calcPixel(readout2), 1);
 }
 
-TEST_F(BraggGeometryTest, Validate) {
+TEST_F(CAEN0DGeometryTest, Validate) {
   DataParser::CaenReadout readout{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   ASSERT_TRUE(geom->validateData(readout));
 

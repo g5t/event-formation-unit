@@ -9,10 +9,10 @@
 #include <modules/caen/CaenBase.h>
 
 int main(int argc, char *argv[]) {
-  MainProg Main("bragg", argc, argv);
+  MainProg Main("caen0d", argc, argv);
 
   auto Detector =
-      new Caen::CaenBase(Main.DetectorSettings, ESSReadout::Parser::BRAGG);
+      new Caen::CaenBase(Main.DetectorSettings, ESSReadout::Parser::CAEN0D);
 
   return Main.run(Detector);
 }

@@ -6,7 +6,7 @@
 /// \brief Generate Bifrost udp stream from a dat file
 //===----------------------------------------------------------------------===//
 
-#include <modules/bragg/generators/ReadoutGenerator.h>
+#include <modules/caen0d/generators/ReadoutGenerator.h>
 
 int main(int argc, char *argv[]) {
 
@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   BifrostGen.setReadoutDataSize(BifrostDataSize);
 
   BifrostGen.argParse(argc, argv);
-  BifrostGen.Settings.Type = ESSReadout::Parser::DetectorType::BRAGG;
+  BifrostGen.Settings.Type = ESSReadout::Parser::DetectorType::CAEN0D;
 
   BifrostGen.main();
   BifrostGen.transmitLoop();

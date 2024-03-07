@@ -9,14 +9,14 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#include <modules/bragg/geometry/BraggGeometry.h>
+#include <modules/caen0d/geometry/CAEN0DGeometry.h>
 
 // #undef TRC_LEVEL
 // #define TRC_LEVEL TRC_L_DEB
 
 namespace Caen {
 
-BraggGeometry::BraggGeometry(Config &CaenConfiguration) {
+CAEN0DGeometry::CAEN0DGeometry(Config &CaenConfiguration) {
   ESSGeom = new ESSGeometry(900, 15, 1, 1);
   setResolution(CaenConfiguration.Resolution);
   MaxRing = CaenConfiguration.MaxRing;
@@ -24,7 +24,7 @@ BraggGeometry::BraggGeometry(Config &CaenConfiguration) {
   MaxGroup = CaenConfiguration.MaxGroup;
 }
 
-bool BraggGeometry::validateData(DataParser::CaenReadout &Data) {
+bool CAEN0DGeometry::validateData(DataParser::CaenReadout &Data) {
   int Ring = Data.FiberId / 2;
   XTRACE(DATA, DEB, "Fiber %u, Ring %d, FEN %u, Group %u", Data.FiberId, Ring,
          Data.FENId, Data.Group);
@@ -49,19 +49,19 @@ bool BraggGeometry::validateData(DataParser::CaenReadout &Data) {
   return true;
 }
 
-int BraggGeometry::xOffset(int Ring, int Group) {
+int CAEN0DGeometry::xOffset(int Ring, int Group) {
   int RingOffset = Ring * NPos;
   int GroupOffset = (Group % 3) * UnitPixellation;
   XTRACE(DATA, DEB, "RingOffset %d, GroupOffset %d", RingOffset, GroupOffset);
   return RingOffset + GroupOffset;
 }
 
-int BraggGeometry::yOffset(int Group) {
+int CAEN0DGeometry::yOffset(int Group) {
   int Arc = Group / 3; // 3 == triplets per arc (for a given ring)
   return Arc * UnitsPerGroup;
 }
 
-std::pair<int, double> BraggGeometry::calcUnitAndPos(int Group, int AmpA,
+std::pair<int, double> CAEN0DGeometry::calcUnitAndPos(int Group, int AmpA,
                                                        int AmpB) {
 
   if (AmpA + AmpB == 0) {
@@ -95,7 +95,7 @@ std::pair<int, double> BraggGeometry::calcUnitAndPos(int Group, int AmpA,
   return std::make_pair(Unit, RawUnitPos);
 }
 
-uint32_t BraggGeometry::calcPixel(DataParser::CaenReadout &Data) {
+uint32_t CAEN0DGeometry::calcPixel(DataParser::CaenReadout &Data) {
   int Ring = Data.FiberId / 2;
   int xoff = xOffset(Ring, Data.Group);
   int yoff = yOffset(Data.Group);
