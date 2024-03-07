@@ -24,9 +24,9 @@
 // #define TRC_LEVEL TRC_L_DEB
 
 namespace Caen {
-class BraggGeometry : public Geometry {
+class CAEN0DGeometry : public Geometry {
 public:
-  BraggGeometry(Config &CaenConfiguration);
+  CAEN0DGeometry(Config &CaenConfiguration);
 
   ///\brief virtual method inherited from base class
   uint32_t calcPixel(DataParser::CaenReadout &Data);

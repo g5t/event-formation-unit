@@ -4,7 +4,7 @@
 /// \file
 ///
 /// \brief Calculate pixelid from digital identifiers, see latest reviewed
-/// ICD for Bragg:
+/// ICD for BIFROST:
 /// https://project.esss.dk/owncloud/index.php/s/AMKp67jcTGmCFmt
 ///
 //===----------------------------------------------------------------------===//
