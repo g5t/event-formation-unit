@@ -12,6 +12,7 @@
 #pragma once
 
 #include <bifrost/geometry/BifrostGeometry.h>
+#include <bragg/geometry/BraggGeometry.h>
 #include <caen/CaenBase.h> // to get CaenSettings
 #include <caen/CaenCounters.h>
 #include <caen/geometry/Config.h>

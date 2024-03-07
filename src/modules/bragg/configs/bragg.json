@@ -1,0 +1,5 @@
+{
+  "Detector": "bragg",
+  "MaxRing": 5,
+  "MaxGroup": 1
+}

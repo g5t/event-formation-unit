@@ -6,6 +6,7 @@
 include_directories(.)
 
 add_subdirectory(bifrost)
+add_subdirectory(bragg)
 add_subdirectory(caen)
 add_subdirectory(timepix3)
 add_subdirectory(trex)

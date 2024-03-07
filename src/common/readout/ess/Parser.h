@@ -47,6 +47,7 @@ public:
     CBM = 0x10,
     LOKI = 0x30,
     BIFROST = 0x34,
+    BRAGG = 0x35,
     MIRACLES = 0x38,
     CSPEC = 0x40,
     NMX = 0x44,

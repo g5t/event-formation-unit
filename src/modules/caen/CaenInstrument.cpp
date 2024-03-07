@@ -13,6 +13,7 @@
 #include <common/time/TimeString.h>
 #include <fmt/format.h>
 
+
 // #undef TRC_LEVEL
 // #define TRC_LEVEL TRC_L_DEB
 
@@ -36,6 +37,8 @@ CaenInstrument::CaenInstrument(struct CaenCounters &counters,
     Geom = new LokiGeometry(CaenConfiguration);
   } else if (settings.DetectorName == "bifrost") {
     Geom = new BifrostGeometry(CaenConfiguration);
+  } else if (settings.DetectorName == "bragg") {
+    Geom = new BraggGeometry(CaenConfiguration);
   } else if (settings.DetectorName == "miracles") {
     Geom = new MiraclesGeometry(CaenConfiguration);
   } else if (settings.DetectorName == "cspec") {
